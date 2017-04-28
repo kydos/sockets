@@ -35,7 +35,7 @@ private let SOCKET_NOSIGNAL = SO_NOSIGPIPE
 #endif
 
 
-extension Descriptor {
+public extension Descriptor {
     /// prevents SIGPIPE from killing process
     func disableSIGPIPE() throws {
         signal(SIGPIPE, SIG_IGN)
@@ -48,7 +48,7 @@ extension Descriptor {
         #endif
     }
 
-    func setBoolOption(
+    public func setBoolOption(
         level: Int32,
         name: Int32,
         value: Bool
@@ -61,11 +61,11 @@ extension Descriptor {
         )
     }
 
-    func getBoolOption(level: Int32, name: Int32) throws -> Bool {
+    public func getBoolOption(level: Int32, name: Int32) throws -> Bool {
         return try getOption(level: level, name: name) > 0
     }
 
-    func setOption<T>(level: Int32, name: Int32, value: T) throws {
+    public func setOption<T>(level: Int32, name: Int32, value: T) throws {
         var val = value
         guard setsockopt(
             raw,
@@ -84,7 +84,7 @@ extension Descriptor {
         }
     }
 
-    func getOption<T>(level: Int32, name: Int32) throws -> T {
+    public func getOption<T>(level: Int32, name: Int32) throws -> T {
         var length = socklen_t(MemoryLayout<T>.stride)
         var val = UnsafeMutablePointer<T>.allocate(capacity: 1)
         defer {
