@@ -8,7 +8,7 @@
 
 //Pretty types -> C types
 
-protocol InternetAddressResolver {
+public protocol InternetAddressResolver {
     func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> ResolvedInternetAddress
 }
 
@@ -17,7 +17,7 @@ protocol InternetAddressResolver {
 //          e.g. "localhost" and "echo" as arguments will result in a list of
 //          IP addresses of the machine that runs the program and port set to 7
 //
-struct Resolver: InternetAddressResolver{
+public struct Resolver: InternetAddressResolver{
 
     // config       -   the provided Config object guides the name resolution
     //                  the socketType and protocolType fields control which kind
@@ -25,7 +25,7 @@ struct Resolver: InternetAddressResolver{
     //                  E.g. set them to .STREAM .TCP to obtain address for a TCP Stream socket
     //              -   Set the addressFamily field to .UNSPECIFIED if you don't care if the
     //                  name resolution leads to IPv4 or IPv6 addresses.
-    func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> ResolvedInternetAddress {
+    public func resolve(_ internetAddress: InternetAddress, with config: inout Config) throws -> ResolvedInternetAddress {
 
                 //
         // Narrowing down the results we will get from the getaddrinfo call

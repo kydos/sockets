@@ -56,7 +56,7 @@ public struct InternetAddress {
     }
 }
 
-extension InternetAddress {
+public extension InternetAddress {
     public func resolve(with config: inout Config) throws -> ResolvedInternetAddress {
         return try Resolver().resolve(self, with: &config)
     }
@@ -160,7 +160,7 @@ extension ResolvedInternetAddress: CustomStringConvertible {
     }
 }
 
-extension Socket {
+public extension Socket {
     public func remoteAddress() throws -> ResolvedInternetAddress {
         var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
         let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
