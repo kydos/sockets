@@ -57,6 +57,27 @@ public class UDPInternetSocket: InternetSocket {
         return (data: out, sender: clientAddress)
     }
 
+    private func createMembershipRequest(_ ip: String, _ ifaddr: String) -> ip_mreq {
+        let group = inet_addr(ip)
+        let iface = inet_addr(ifaddr)
+        var imr =  ip_mreq()
+        imr.imr_multiaddr.s_addr = group;
+        imr.imr_interface.s_addr = iface
+        return imr
+    }
+    
+    public func join(group mcastAddr: String, iface ifname: String) throws {
+        let imr = self.createMembershipRequest(mcastAddr, ifname)
+        try self.descriptor.setOption(level: IPPROTO_IP, name: IP_ADD_MEMBERSHIP, value: imr)
+    
+    }
+    
+    public func leave(group mcastAddr: String, iface ifname: String) throws {
+        let imr = self.createMembershipRequest(mcastAddr, ifname)
+        try self.descriptor.setOption(level: IPPROTO_IP, name: IP_ADD_MEMBERSHIP, value: imr)
+    
+    }
+    
     public func sendto(data: [UInt8], address: ResolvedInternetAddress? = nil) throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = data.count
