@@ -11,7 +11,7 @@ extension TCPWriteableSocket {
         }
     }
 
-    public func write(buffer buf: ByteBuffer) throws {
+    public func write(_ buf: ByteBuffer) throws {
         let len = buf.remaining
         let sentLen = libc.send(descriptor.raw, buf.getUnsafeMutablePointer(), len, 0)
         guard sentLen == len else {

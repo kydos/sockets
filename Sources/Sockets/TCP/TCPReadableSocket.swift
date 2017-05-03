@@ -42,7 +42,7 @@ extension TCPReadableSocket {
         return Array(buffer.bytes[0..<receivedBytes])
     }
     
-    public func read(buffer buf: ByteBuffer) throws -> Int {
+    public func read(_ buf: ByteBuffer) throws -> Int {
         
         let receivedBytes = libc.recv(
             descriptor.raw,

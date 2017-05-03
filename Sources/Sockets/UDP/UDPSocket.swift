@@ -29,7 +29,7 @@ public class UDPInternetSocket: InternetSocket {
     }
 
     
-    public func recvfrom(buf: ByteBuffer) throws -> ResolvedInternetAddress {
+    public func recvfrom(_ buf: ByteBuffer) throws -> ResolvedInternetAddress {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let pos = buf.position
         let lim = buf.limit
@@ -126,7 +126,7 @@ public class UDPInternetSocket: InternetSocket {
 
     
 
-    public func sendto(buf: ByteBuffer, address: ResolvedInternetAddress? = nil) throws {
+    public func sendto(_ buf: ByteBuffer, address: ResolvedInternetAddress? = nil) throws {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let len = buf.limit - buf.position
         let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
