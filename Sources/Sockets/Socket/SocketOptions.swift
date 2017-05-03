@@ -54,6 +54,17 @@ extension RawSocket {
         try setSendingTimeout(timeval(seconds: timeout))
         try setReceivingTimeout(timeval(seconds: timeout))
     }
+    
+    
+    public func setReusePort(_ newValue: Bool) throws {
+        if isClosed { throw SocketsError(.socketIsClosed) }
+        try descriptor.setBoolOption(level: SOL_SOCKET, name: SO_REUSEPORT, value: newValue)
+    }
+    
+    public func getReusePort(_ newValue: Bool) throws -> Bool {
+        if isClosed { throw SocketsError(.socketIsClosed) }
+        return try descriptor.getBoolOption(level: SOL_SOCKET, name: SO_REUSEPORT)
+    }
 }
 
 
