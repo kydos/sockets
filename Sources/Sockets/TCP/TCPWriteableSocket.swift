@@ -18,6 +18,7 @@ extension TCPWriteableSocket {
         guard sentLen == len else {
             throw SocketsError(.sendFailedToSendAllBytes)
         }
+        buf.position = buf.limit
     }
     
     public func flush() throws {

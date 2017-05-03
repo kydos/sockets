@@ -66,6 +66,7 @@ extension TCPReadableSocket {
             default:
                 throw SocketsError(.readFailed)
             }
+            
         }
         
         guard receivedBytes > 0 else {
@@ -76,7 +77,7 @@ extension TCPReadableSocket {
             _ = try? self.close()
             return 0
         }
-        
+        buf.position = buf.position + receivedBytes
         return receivedBytes
     }
 }

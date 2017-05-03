@@ -54,6 +54,7 @@ public class UDPInternetSocket: InternetSocket {
             addr.deallocate(capacity: 1)
             throw SocketsError(.readFailed)
         }
+        buf.position = buf.position + receivedBytes
         
         return ResolvedInternetAddress(raw: addr)
     }
@@ -142,6 +143,7 @@ public class UDPInternetSocket: InternetSocket {
             destination.rawLen
         )
         guard sentLen == len else { throw SocketsError(.sendFailedToSendAllBytes) }
+        buf.position = buf.limit
     }
     
 
