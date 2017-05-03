@@ -28,6 +28,35 @@ public class UDPInternetSocket: InternetSocket {
         try? self.close()
     }
 
+    
+    public func recvfrom(buf: ByteBuffer) throws -> ResolvedInternetAddress {
+        if isClosed { throw SocketsError(.socketIsClosed) }
+        let pos = buf.position
+        let lim = buf.limit
+        let len = lim - pos
+        let rawBuf = buf.getUnsafeMutablePointer()
+        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        
+        var length = socklen_t(MemoryLayout<sockaddr_storage>.size)
+        let addr = UnsafeMutablePointer<sockaddr_storage>.allocate(capacity: 1)
+        let addrSockAddr = UnsafeMutablePointer<sockaddr>(OpaquePointer(addr))
+        
+        let receivedBytes = libc.recvfrom(
+            descriptor.raw,
+            rawBuf,
+            len,
+            flags,
+            addrSockAddr,
+            &length
+        )
+        guard receivedBytes > -1 else {
+            addr.deallocate(capacity: 1)
+            throw SocketsError(.readFailed)
+        }
+        
+        return ResolvedInternetAddress(raw: addr)
+    }
+    
     public func recvfrom(maxBytes: Int = BufferCapacity) throws -> (data: [UInt8], sender: ResolvedInternetAddress) {
         if isClosed { throw SocketsError(.socketIsClosed) }
         let data = Buffer(capacity: maxBytes)
@@ -94,6 +123,28 @@ public class UDPInternetSocket: InternetSocket {
         )
         guard sentLen == len else { throw SocketsError(.sendFailedToSendAllBytes) }
     }
+
+    
+
+    public func sendto(buf: ByteBuffer, address: ResolvedInternetAddress? = nil) throws {
+        if isClosed { throw SocketsError(.socketIsClosed) }
+        let len = buf.limit - buf.position
+        let flags: Int32 = 0 //FIXME: allow setting flags with a Swift enum
+        let destination = address ?? self.address
+        
+        let sentLen = libc.sendto(
+            descriptor.raw,
+            buf.getUnsafeMutablePointer(),
+            len,
+            flags,
+            destination.raw,
+            destination.rawLen
+        )
+        guard sentLen == len else { throw SocketsError(.sendFailedToSendAllBytes) }
+    }
+    
+
+    
 
     public func close() throws {
         if isClosed { return }
