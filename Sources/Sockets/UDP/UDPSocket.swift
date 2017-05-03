@@ -1,4 +1,5 @@
 import libc
+import Snio
 
 public class UDPInternetSocket: InternetSocket {
 

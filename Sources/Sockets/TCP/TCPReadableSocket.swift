@@ -1,4 +1,5 @@
 import libc
+import Snio
 
 public protocol TCPReadableSocket: TCPSocket, ReadableStream {}
 
