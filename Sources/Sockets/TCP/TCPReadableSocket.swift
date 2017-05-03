@@ -55,7 +55,7 @@ extension TCPReadableSocket {
             switch errno {
             case EINTR:
                 // try again
-                return try read(buffer: buf)
+                return try read(buf)
             case ECONNRESET:
                 // closed by peer, need to close this side.
                 // Since this is not an error, no need to throw unless the close
