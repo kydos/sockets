@@ -99,13 +99,13 @@ public class UDPInternetSocket: InternetSocket {
     
     public func join(group mcastAddr: String, iface ifname: String) throws {
         let imr = self.createMembershipRequest(mcastAddr, ifname)
-        try self.descriptor.setOption(level: IPPROTO_IP, name: IP_ADD_MEMBERSHIP, value: imr)
+        try self.descriptor.setOption(level: Int32(IPPROTO_IP), name: IP_ADD_MEMBERSHIP, value: imr)
     
     }
     
     public func leave(group mcastAddr: String, iface ifname: String) throws {
         let imr = self.createMembershipRequest(mcastAddr, ifname)
-        try self.descriptor.setOption(level: IPPROTO_IP, name: IP_ADD_MEMBERSHIP, value: imr)
+        try self.descriptor.setOption(level: Int32(IPPROTO_IP), name: IP_ADD_MEMBERSHIP, value: imr)
     
     }
     
